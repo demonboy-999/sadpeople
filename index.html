@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Healing Hub 🐾</title>
+  <style>
+    body { margin:0; padding:0; font-family:"Segoe UI",sans-serif; background:white; color:#333; }
+    header { background:#f9e0e9; padding:1.5rem; text-align:center; }
+    header h1 { font-size:2.5rem; margin:0; }
+    section { padding:1rem; max-width:800px; margin:auto; }
+    .card { background:#fff; border-radius:12px; padding:1.2rem; margin:1.2rem 0; box-shadow:0 3px 8px rgba(0,0,0,0.08); position:relative; }
+    .card::before { content:"🐱"; font-size:1.2rem; position:absolute; top:-12px; left:-12px; background:#fdecef; border-radius:50%; padding:4px 6px; }
+    textarea { width:100%; min-height:100px; padding:0.6rem; border:1px solid #ccc; border-radius:6px; resize:vertical; }
+    button { background:#e4a5c7; color:white; border:none; padding:0.6rem 1.2rem; margin-top:0.5rem; border-radius:6px; cursor:pointer; font-weight:bold; }
+    button:hover { background:#c774a4; }
+    .quote { font-style:italic; text-align:center; font-size:1.2rem; }
+    .small { font-size:0.9rem; color:#666; text-align:center; }
+    iframe { border-radius:12px; }
+    #canvasContainer { text-align:center; }
+    #colorCanvas { border:1px solid #ccc; border-radius:6px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Healing Hub 🐾</h1>
+    <p>A soft space to mend your heart (with cats).</p>
+  </header>
+
+  <section>
+    <div class="card">
+      <h2>🌸 Daily Encouragement</h2>
+      <p class="quote" id="dailyQuote">Loading...</p>
+    </div>
+
+    <div class="card">
+      <h2>📝 Private Journal</h2>
+      <textarea id="journal" placeholder="Write anything here..."></textarea>
+      <button onclick="saveJournal()">Save</button>
+      <p class="small">Saved only in your browser.</p>
+    </div>
+
+    <div class="card">
+      <h2>🐾 Mini Exercise: Ground Yourself</h2>
+      <button onclick="startBreathing()">Start Breathing Exercise</button>
+      <p id="breathingInstruction"></p>
+    </div>
+
+    <div class="card">
+      <h2>🎶 Mandarin Love Songs Playlist</h2>
+      <iframe src="https://open.spotify.com/embed/playlist/5jpLomJ2FIdD1TfkQlQgNW" width="100%" height="352" allow="autoplay; clipboard-write; encrypted-media"></iframe>
+      <p class="small">Music to feel, release, and heal. 🐈</p>
+    </div>
+
+    <div class="card" id="canvasContainer">
+      <h2>🎨 Coloring Canvas</h2>
+      <canvas id="colorCanvas" width="300" height="200"></canvas><br>
+      <button onclick="clearCanvas()">Clear</button>
+    </div>
+
+    <div class="card">
+      <h2>💌 Message to Future You</h2>
+      <textarea id="futureMessage" placeholder="Write a message to your future self..."></textarea>
+      <button onclick="saveFuture()">Save Message</button>
+      <button onclick="showFuture()">Show Saved Message</button>
+      <p id="futureDisplay"></p>
+    </div>
+
+    <div class="card">
+      <h2>✨ Messages from Friends</h2>
+      <p id="friendMessage">Loading...</p>
+    </div>
+  </section>
+
+  <script>
+    // Encouragement & messages
+    const quotes = [ "You are more than this moment.", "Healing isn’t linear, and that’s okay.", "You are worthy of love and peace.", "Your strength is forever.", "You are someone a cat would nap beside." ];
+    document.getElementById("dailyQuote").textContent = quotes[Math.floor(Math.random()*quotes.length)];
+
+    const friendMessages = [ "You’re doing better than you think. 🐱", "Sending you a cat hug. 🐾", "We’re all rooting for you.", "It’s okay to miss them and still move on.", "You deserve soft days." ];
+    document.getElementById("friendMessage").textContent = friendMessages[Math.floor(Math.random()*friendMessages.length)];
+
+    // Journal
+    const journal = document.getElementById("journal");
+    if (localStorage.getItem("journal")) journal.value = localStorage.getItem("journal");
+    function saveJournal() { localStorage.setItem("journal", journal.value); alert("Journal saved."); }
+
+    // Future message
+    const future = document.getElementById("futureMessage"), futureD = document.getElementById("futureDisplay");
+    function saveFuture() { localStorage.setItem("futureMessage", future.value); alert("Message saved."); }
+    function showFuture() { futureD.textContent = localStorage.getItem("futureMessage") || "No message saved yet."; }
+
+    // Breathing
+    function startBreathing() {
+      const steps = ["Inhale…4…3…2…1", "Hold…4…3…2…1", "Exhale…4…3…2…1", "One more time."];
+      let i=0;
+      function next() {
+        document.getElementById("breathingInstruction").textContent = steps[i++] || "All done. Breathe in peace.";
+        if (i < steps.length+1) setTimeout(next,4000);
+      }
+      next();
+    }
+
+    // Coloring canvas
+    const canvas = document.getElementById("colorCanvas"), ctx = canvas.getContext("2d");
+    let drawing=false;
+    canvas.addEventListener("mousedown",()=>drawing=true);
+    canvas.addEventListener("mouseup",()=>drawing=false);
+    canvas.addEventListener("mousemove",(e)=>{
+      if (!drawing) return;
+      const rect=canvas.getBoundingClientRect();
+      ctx.fillStyle="#e4a5c7"; ctx.beginPath();
+      ctx.arc(e.clientX-rect.left, e.clientY-rect.top,4,0,2*Math.PI);
+      ctx.fill();
+    });
+    function clearCanvas(){ ctx.clearRect(0,0,canvas.width,canvas.height); }
+  </script>
+</body>
+</html>
