@@ -14,7 +14,7 @@
     textarea { width:100%; min-height:100px; padding:0.6rem; border:1px solid #ccc; border-radius:6px; resize:vertical; }
     button { background:#e4a5c7; color:white; border:none; padding:0.6rem 1.2rem; margin-top:0.5rem; border-radius:6px; cursor:pointer; font-weight:bold; }
     button:hover { background:#c774a4; }
-    .quote { font-style:italic; text-align:center; font-size:1.2rem; transition: opacity 0.3s ease; }
+    .quote { font-style:italic; text-align:center; font-size:1.2rem; }
     .small { font-size:0.9rem; color:#666; text-align:center; }
     iframe { border-radius:12px; }
     #canvasContainer { text-align:center; }
@@ -57,12 +57,11 @@
       <canvas id="colorCanvas" width="300" height="200"></canvas><br>
       <button onclick="clearCanvas()">Clear</button>
     </div>
-
     <div class="card">
-      <h2>💖 Compliment Mirror</h2>
-      <button onclick="showCompliment()">I need a compliment</button>
-      <p id="complimentDisplay" class="quote"></p>
-    </div>
+  <h2>💖 Compliment Mirror</h2>
+  <button onclick="showCompliment()">I need a compliment</button>
+  <p id="complimentDisplay" class="quote"></p>
+</div>
 
     <div class="card">
       <h2>💌 Message to Future You</h2>
@@ -78,85 +77,85 @@
     </div>
   </section>
 
-  <script>
-    // Daily quote
-    const quotes = [
-      "You are more than this moment.",
-      "Healing isn’t linear, and that’s okay.",
-      "You are worthy of love and peace.",
-      "Your strength is forever.",
-      "You are someone a cat would nap beside."
-    ];
-    document.getElementById("dailyQuote").textContent = quotes[Math.floor(Math.random() * quotes.length)];
+<script>
+  // Daily quote
+  const quotes = [
+    "You are more than this moment.",
+    "Healing isn’t linear, and that’s okay.",
+    "You are worthy of love and peace.",
+    "Your strength is forever.",
+    "You are someone a cat would nap beside."
+  ];
+  document.getElementById("dailyQuote").textContent = quotes[Math.floor(Math.random() * quotes.length)];
 
-    // Friend messages
-    const friendMessages = [
-      "DRINK MORE BEER!!!",
-      "Let's beat up Affan together next time",
-      "NEXT TIME DONT VOMIT"
-    ];
-    document.getElementById("friendMessage").textContent = friendMessages[Math.floor(Math.random() * friendMessages.length)];
+  // Friend messages
+  const friendMessages = [
+    "DRINK MORE BEER!!!",
+    "Let's beat up Affan together next time",
+    "NEXT TIME DONT VOMIT"
+  ];
+  document.getElementById("friendMessage").textContent = friendMessages[Math.floor(Math.random() * friendMessages.length)];
 
-    // Journal
-    const journal = document.getElementById("journal");
-    if (localStorage.getItem("journal")) journal.value = localStorage.getItem("journal");
-    function saveJournal() {
-      localStorage.setItem("journal", journal.value);
-      alert("Journal saved.");
-    }
+  // Journal
+  const journal = document.getElementById("journal");
+  if (localStorage.getItem("journal")) journal.value = localStorage.getItem("journal");
+  function saveJournal() {
+    localStorage.setItem("journal", journal.value);
+    alert("Journal saved.");
+  }
 
-    // Future message
-    const future = document.getElementById("futureMessage"), futureD = document.getElementById("futureDisplay");
-    function saveFuture() {
-      localStorage.setItem("futureMessage", future.value);
-      alert("Message saved.");
-    }
-    function showFuture() {
-      futureD.textContent = localStorage.getItem("futureMessage") || "No message saved yet.";
-    }
+  // Future message
+  const future = document.getElementById("futureMessage"), futureD = document.getElementById("futureDisplay");
+  function saveFuture() {
+    localStorage.setItem("futureMessage", future.value);
+    alert("Message saved.");
+  }
+  function showFuture() {
+    futureD.textContent = localStorage.getItem("futureMessage") || "No message saved yet.";
+  }
 
-    // Breathing exercise
-    function startBreathing() {
-      const steps = ["Inhale…4…3…2…1", "Hold…4…3…2…1", "Exhale…4…3…2…1", "One more time."];
-      let i = 0;
-      function next() {
-        document.getElementById("breathingInstruction").textContent = steps[i++] || "All done. Breathe in peace.";
-        if (i < steps.length + 1) setTimeout(next, 4000);
-      }
-      next();
+  // Breathing exercise
+  function startBreathing() {
+    const steps = ["Inhale…4…3…2…1", "Hold…4…3…2…1", "Exhale…4…3…2…1", "One more time."];
+    let i = 0;
+    function next() {
+      document.getElementById("breathingInstruction").textContent = steps[i++] || "All done. Breathe in peace.";
+      if (i < steps.length + 1) setTimeout(next, 4000);
     }
+    next();
+  }
 
-    // Coloring canvas
-    const canvas = document.getElementById("colorCanvas"), ctx = canvas.getContext("2d");
-    let drawing = false;
-    canvas.addEventListener("mousedown", () => drawing = true);
-    canvas.addEventListener("mouseup", () => drawing = false);
-    canvas.addEventListener("mousemove", (e) => {
-      if (!drawing) return;
-      const rect = canvas.getBoundingClientRect();
-      ctx.fillStyle = "#e4a5c7";
-      ctx.beginPath();
-      ctx.arc(e.clientX - rect.left, e.clientY - rect.top, 4, 0, 2 * Math.PI);
-      ctx.fill();
-    });
-    function clearCanvas() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
+  // Coloring canvas
+  const canvas = document.getElementById("colorCanvas"), ctx = canvas.getContext("2d");
+  let drawing = false;
+  canvas.addEventListener("mousedown", () => drawing = true);
+  canvas.addEventListener("mouseup", () => drawing = false);
+  canvas.addEventListener("mousemove", (e) => {
+    if (!drawing) return;
+    const rect = canvas.getBoundingClientRect();
+    ctx.fillStyle = "#e4a5c7";
+    ctx.beginPath();
+    ctx.arc(e.clientX - rect.left, e.clientY - rect.top, 4, 0, 2 * Math.PI);
+    ctx.fill();
+  });
+  function clearCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
 
-    // Compliment mirror
-    const compliments = [
-      "You have the kind of heart cats trust instantly.",
-      "You're not just healing — you're glowing.",
-      "Someone out there thinks of you and smiles.",
-      "You’re stronger than a coffee-fueled Monday.",
-      "Your laugh could end world wars.",
-      "Even Affan couldn’t ruin your vibe today."
-    ];
-    function showCompliment() {
-      const compliment = compliments[Math.floor(Math.random() * compliments.length)];
-      const display = document.getElementById("complimentDisplay");
-      display.textContent = compliment;
-    }
-  </script>
+  // Compliment mirror
+  const compliments = [
+    "You have the kind of heart cats trust instantly.",
+    "You're not just healing — you're glowing.",
+    "Someone out there thinks of you and smiles.",
+    "You’re stronger than a coffee-fueled Monday.",
+    "Your laugh could end world wars.",
+    "Even Affan couldn’t ruin your vibe today."
+  ];
+  function showCompliment() {
+    const compliment = compliments[Math.floor(Math.random() * compliments.length)];
+    document.getElementById("complimentDisplay").textContent = compliment;
+  }
+</script>
+
 </body>
 </html>
